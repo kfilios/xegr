@@ -1,4 +1,6 @@
 .app {
+	display: flex;
+	align-items: center;
 	text-align: center;
 	background-color: #3e3e42;
 	min-height: 100vh;

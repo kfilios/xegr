@@ -12,11 +12,17 @@ module.exports = {
 			title: {
 				type: Sequelize.STRING
 			},
-			description: {
-				type: Sequelize.TEXT
+			type: {
+				type: Sequelize.STRING
 			},
 			area: {
 				type: Sequelize.STRING
+			},
+			price: {
+				type: Sequelize.STRING
+			},
+			description: {
+				type: Sequelize.TEXT
 			},
 			createdAt: {
 				allowNull: false,

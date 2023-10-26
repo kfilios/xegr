@@ -2,8 +2,10 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 
 interface PropertyAttributes {
 	title: string;
-	description: string;
+	type: string;
 	area: string;
+	price: number;
+	description: string;
 	createdAt: Date;
 }
 
@@ -16,8 +18,10 @@ const Property = (sequelize: Sequelize) => {
 		"Property",
 		{
 			title: DataTypes.STRING,
-			description: DataTypes.TEXT,
+			type: DataTypes.STRING,
 			area: DataTypes.STRING,
+			price: DataTypes.NUMBER,
+			description: DataTypes.TEXT,
 			createdAt: {
 				type: DataTypes.DATE,
 				defaultValue: DataTypes.NOW,

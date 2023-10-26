@@ -2,17 +2,14 @@ import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import Property from "./models/property.model";
+import Property from "./models/Property.model";
 import { sequelize } from "./config";
 
 const app = express();
 const PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-
-// const router = express.Router();
 
 const PropertyModel = Property(sequelize);
 
@@ -20,16 +17,13 @@ const PropertyModel = Property(sequelize);
 app.post("/create", async (req: Request, res: Response) => {
 	try {
 		// Get the property data from the request body
-		const { title, description, area } = req.body;
+		const { title, type, area, price, description } = req.body;
 
 		// Create a new property record in the database
-		const newProperty = await PropertyModel.create({
-			title,
-			description,
-			area
-		});
+		const newProperty = await PropertyModel.create({ title, type, area, price, description });
 
-		return res.status(201).json(newProperty); // Send the newly created property as a response
+		// Send the newly created property as a response
+		return res.status(201).json(newProperty);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ message: "Failed to create a new property." });

@@ -1,7 +1,12 @@
+import { PropertyForm } from "components";
 import "./App.css";
 
 function App() {
-	return <div className="app">Hello world!</div>;
+	return (
+		<div className="app">
+			<PropertyForm />
+		</div>
+	);
 }
 
 export default App;
