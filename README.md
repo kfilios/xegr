@@ -1,46 +1,56 @@
-# Getting Started with Create React App
+# Hello to xegr build with React!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I am excited to share this project that highlights some of my basic React skils and showcases my passion for creating interactive and user-friendly web applications.
 
-## Available Scripts
+# Project Overview
 
-In the project directory, you can run:
+Xegr is a React-based web application designed with React. It was built with a focus on performance, responsiveness, and a seamless user experience.
+
+# Front-end
+
+## Available front-end Scripts
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Runs in development mode. [http://localhost:3000](http://localhost:3000).
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Starts Jest.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Back-end
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In order to run the back-end you should run (Start the front-end first):
 
-### `npm run eject`
+1. `cd server`
+2. `npm start`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## MySQL database
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In order to save Property records to MySQL DB you should:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. Start a MySQL server
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- You can do it with Docker easily for example (MacOS data structure):
+- `mkdir -p /Users/<USERFOLDER>/DockerData/MySQL/8.0`
+  - `docker run --restart always --name mysql8.0 -v /Users/<USERFOLDER>/DockerData/MySQL/8.0:/var/lib/mysql -p 3306:3306 -d -e MYSQL_ROOT_PASSWORD=thisisastrongpass mysql:8.0`
 
-## Learn More
+2. Create server/config/config.json with content:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```json
+{
+	"development": {
+		"username": "root",
+		"password": "thisisastrongpass",
+		"database": "xegr",
+		"host": "127.0.0.1",
+		"dialect": "mysql"
+	}
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. Run migration `npx sequelize db:migrate`
