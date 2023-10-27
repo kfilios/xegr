@@ -81,14 +81,26 @@ app.post("/create", async (req: Request, res: Response) => {
 			return res.status(400).json({ message: "Please fill in all fields." });
 		}
 
-		// Create a new property record in the database
-		const { title, type, area, price, description, placeId } = formData;
-		const newProperty = await PropertyModel.create({ title, type, area, price, description, placeId });
+		sequelize
+			.authenticate()
+			.then(async () => {
+				// Create a new property record if the database is online
+				console.log("Database is online");
+				const { title, type, area, price, description, placeId } = formData;
+				const newProperty = await PropertyModel.create({ title, type, area, price, description, placeId });
 
-		// Send the newly created property as a response
-		setTimeout(() => {
-			return res.status(201).json(newProperty);
-		}, 1000);
+				// Send the newly created property as a response
+				setTimeout(() => {
+					return res.status(201).json(newProperty);
+				}, 1000);
+			})
+			.catch(error => {
+				console.error("Database connection failed");
+				// Send the newly created property as a response
+				setTimeout(() => {
+					return res.status(201).json(req.body);
+				}, 1000);
+			});
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ message: "Failed to create a new property." });

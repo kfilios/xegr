@@ -34,7 +34,7 @@ function PropertyForm() {
 	const handleSubmit = async (e: SyntheticEvent) => {
 		e.preventDefault();
 		setLoading(true);
-		setError("");
+		setError(null);
 		// Send data to the server for storage
 		try {
 			const response = await fetch("http://localhost:3030/create", {
@@ -135,7 +135,7 @@ function PropertyForm() {
 					/>
 				</div>
 				{error && <div className="error">Error: {error}</div>}
-				<button type="submit" disabled={!!(loading || error || !validProperty)}>
+				<button type="submit" disabled={!!(loading || !validProperty)}>
 					{loading && "Loading.."}
 					{!loading && validProperty && validPlaceId && "Submit"}
 					{!loading && !validProperty && !hasFormErrors && "Please fill in all fields"}
