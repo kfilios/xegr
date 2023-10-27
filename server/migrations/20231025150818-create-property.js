@@ -18,6 +18,9 @@ module.exports = {
 			area: {
 				type: Sequelize.STRING
 			},
+			placeId: {
+				type: Sequelize.STRING
+			},
 			price: {
 				type: Sequelize.STRING
 			},

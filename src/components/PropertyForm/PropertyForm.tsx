@@ -22,7 +22,7 @@ function PropertyForm() {
 				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify(formData)
+				body: JSON.stringify({ ...formData, placeId })
 			});
 			setLoading(false);
 

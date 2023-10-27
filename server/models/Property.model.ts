@@ -4,6 +4,7 @@ interface PropertyAttributes {
 	title: string;
 	type: number;
 	area: string;
+	placeId: string;
 	price: number;
 	description: string;
 	createdAt: Date;
@@ -20,6 +21,10 @@ const Property = (sequelize: Sequelize) => {
 			title: DataTypes.STRING,
 			type: DataTypes.NUMBER,
 			area: DataTypes.STRING,
+			placeId: {
+				type: DataTypes.STRING,
+				field: "placeId"
+			},
 			price: DataTypes.NUMBER,
 			description: DataTypes.TEXT,
 			createdAt: {

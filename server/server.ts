@@ -62,10 +62,10 @@ app.get("/fetchData", async (req: Request, res: Response) => {
 // Create a new property
 app.post("/create", async (req: Request, res: Response) => {
 	try {
-		const { title, type, area, price, description } = req.body;
+		const { title, type, area, price, description, placeId } = req.body;
 
 		// Create a new property record in the database
-		const newProperty = await PropertyModel.create({ title, type, area, price, description });
+		const newProperty = await PropertyModel.create({ title, type, area, price, description, placeId });
 
 		// Send the newly created property as a response
 		setTimeout(() => {
