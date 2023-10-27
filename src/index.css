@@ -72,6 +72,14 @@ textarea {
 	font-size: 16px;
 }
 
+/* Allow highlight on tab press */
+input:focus,
+select:focus,
+textarea:focus {
+	background-color: #ddf;
+	outline: none;
+}
+
 textarea {
 	/* Allow vertical resizing only */
 	resize: vertical;

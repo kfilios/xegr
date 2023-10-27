@@ -2,7 +2,7 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 
 interface PropertyAttributes {
 	title: string;
-	type: string;
+	type: number;
 	area: string;
 	price: number;
 	description: string;
@@ -18,7 +18,7 @@ const Property = (sequelize: Sequelize) => {
 		"Property",
 		{
 			title: DataTypes.STRING,
-			type: DataTypes.STRING,
+			type: DataTypes.NUMBER,
 			area: DataTypes.STRING,
 			price: DataTypes.NUMBER,
 			description: DataTypes.TEXT,
