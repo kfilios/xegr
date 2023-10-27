@@ -62,9 +62,27 @@ app.get("/fetchData", async (req: Request, res: Response) => {
 // Create a new property
 app.post("/create", async (req: Request, res: Response) => {
 	try {
-		const { title, type, area, price, description, placeId } = req.body;
+		const formData = req.body;
+
+		const isTitleValid = formData?.title?.length <= 155;
+		if (!isTitleValid) return res.status(400).json({ message: "Title is too long." });
+		const isPriceValid = !isNaN(formData?.price);
+		if (!isPriceValid) return res.status(400).json({ message: "Price must be a number." });
+		const isAreaValid = formData?.placeId;
+		if (!isAreaValid) return res.status(400).json({ message: "Please select an area from the list." });
+
+		const isDonation = `${formData?.type}` === "4";
+		const isValidProperty =
+			formData?.title && formData?.type > 0 && formData?.area && (formData?.price || isDonation);
+		if (isValidProperty) {
+			// const property = await PropertyModel.findOne({ where: { title: formData?.title } });
+			// if (property) return res.status(400).json({ message: "Property already exists." });
+		} else {
+			return res.status(400).json({ message: "Please fill in all fields." });
+		}
 
 		// Create a new property record in the database
+		const { title, type, area, price, description, placeId } = formData;
 		const newProperty = await PropertyModel.create({ title, type, area, price, description, placeId });
 
 		// Send the newly created property as a response

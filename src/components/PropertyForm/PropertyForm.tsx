@@ -33,8 +33,8 @@ function PropertyForm() {
 
 	const handleSubmit = async (e: SyntheticEvent) => {
 		e.preventDefault();
-		setFormData(emptyFormData);
 		setLoading(true);
+		setError("");
 		// Send data to the server for storage
 		try {
 			const response = await fetch("http://localhost:3030/create", {
@@ -50,7 +50,8 @@ function PropertyForm() {
 				const responseData = await response.json();
 				setFormData(responseData);
 			} else {
-				setError("Failed to create property");
+				const responseData = await response.json();
+				setError(responseData?.message ?? "Failed to create property");
 				console.error("Failed to create property");
 			}
 		} catch (error) {
