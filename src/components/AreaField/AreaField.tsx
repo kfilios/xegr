@@ -9,9 +9,10 @@ interface Props {
 	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	setError: React.Dispatch<React.SetStateAction<string | null>>;
+	setPlaceId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const AreaField = ({ formData, setFormData, setLoading, setError }: Props) => {
+const AreaField = ({ formData, setFormData, setLoading, setError, setPlaceId }: Props) => {
 	const [suggestions, setSuggestions] = useState([]);
 	const [highlightedSection, setHighlightedSection] = useState("");
 
@@ -46,14 +47,17 @@ const AreaField = ({ formData, setFormData, setLoading, setError }: Props) => {
 	};
 
 	const onSuggestionChange = (_e: React.FormEvent<HTMLElement>, { newValue }: { newValue: string }) => {
+		setPlaceId(null);
 		setFormData({ ...formData, area: newValue });
 	};
 
 	const onSuggestionSelected = (
-		e: React.FormEvent<HTMLElement>,
-		{ suggestionValue }: { suggestionValue: string }
+		_e: React.FormEvent<HTMLElement>,
+		{ suggestion, suggestionValue }: { suggestion: any; suggestionValue: string }
 	) => {
+		const { placeId } = suggestion ?? {};
 		setFormData({ ...formData, area: suggestionValue });
+		setPlaceId(placeId);
 	};
 
 	const onSuggestionHighlighted = ({ suggestion }: { suggestion: { mainText: string } }) => {

@@ -8,6 +8,7 @@ import "./styles.css";
 function PropertyForm() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [placeId, setPlaceId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>(emptyFormData);
 
 	const handleSubmit = async (e: SyntheticEvent) => {
@@ -45,6 +46,9 @@ function PropertyForm() {
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const validProperty = formData.title && formData.type && formData.area && formData.price;
+	const validPlaceId = placeId;
+
 	return (
 		<div className="my-form">
 			<h2>New Property</h2>
@@ -76,6 +80,7 @@ function PropertyForm() {
 						setFormData={setFormData}
 						setLoading={setLoading}
 						setError={setError}
+						setPlaceId={setPlaceId}
 					/>
 				</div>
 				<div className="form-group">
@@ -100,9 +105,11 @@ function PropertyForm() {
 					/>
 				</div>
 				{error && <div className="error">Error: {error}</div>}
-				<button type="submit" disabled={!!(loading || error)}>
+				<button type="submit" disabled={!!(loading || error || !validProperty)}>
 					{loading && "Loading.."}
-					{!loading && "Submit"}
+					{!loading && validProperty && validPlaceId && "Submit"}
+					{!loading && !validProperty && "Please fill in all fields"}
+					{!loading && validProperty && !validPlaceId && "Please select an area from the list"}
 				</button>
 			</form>
 		</div>
