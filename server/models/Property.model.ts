@@ -18,15 +18,30 @@ const Property = (sequelize: Sequelize) => {
 	const Property = sequelize.define<PropertyInstance, PropertyAttributes>(
 		"Property",
 		{
-			title: DataTypes.STRING,
-			type: DataTypes.NUMBER,
-			area: DataTypes.STRING,
+			title: {
+				type: DataTypes.STRING,
+				allowNull: false
+			},
+			type: {
+				type: DataTypes.NUMBER,
+				allowNull: false
+			},
+			area: {
+				type: DataTypes.STRING,
+				allowNull: false
+			},
 			placeId: {
 				type: DataTypes.STRING,
+				allowNull: false,
 				field: "placeId"
 			},
-			price: DataTypes.NUMBER,
-			description: DataTypes.TEXT,
+			price: {
+				type: DataTypes.NUMBER,
+				allowNull: false
+			},
+			description: {
+				type: DataTypes.TEXT
+			},
 			createdAt: {
 				type: DataTypes.DATE,
 				defaultValue: DataTypes.NOW,

@@ -11,6 +11,10 @@ function PropertyForm() {
 	const [placeId, setPlaceId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>(emptyFormData);
 
+	const isDonation = `${formData.type}` === "4";
+	const validProperty = formData.title && formData.type && formData.area && (formData.price || isDonation);
+	const validPlaceId = placeId;
+
 	const handleSubmit = async (e: SyntheticEvent) => {
 		e.preventDefault();
 		setFormData(emptyFormData);
@@ -22,7 +26,7 @@ function PropertyForm() {
 				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ ...formData, placeId })
+				body: JSON.stringify({ ...formData, placeId, price: isDonation ? 0 : formData.price })
 			});
 			setLoading(false);
 
@@ -46,9 +50,6 @@ function PropertyForm() {
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const validProperty = formData.title && formData.type && formData.area && formData.price;
-	const validPlaceId = placeId;
-
 	return (
 		<div className="my-form">
 			<h2>New Property</h2>
@@ -68,9 +69,10 @@ function PropertyForm() {
 					<label htmlFor="type">Type:</label>
 					<select id="type" name="type" value={formData.type} onChange={handleInputChange}>
 						<option value="-1">Select type</option>
-						<option value="1">Option 1</option>
-						<option value="2">Option 2</option>
-						<option value="3">Option 3</option>
+						<option value="1">Rent</option>
+						<option value="2">Buy</option>
+						<option value="3">Exchange</option>
+						<option value="4">Donation</option>
 					</select>
 				</div>
 				<div className="form-group">
@@ -90,8 +92,9 @@ function PropertyForm() {
 						id="price"
 						name="price"
 						placeholder="Amount"
-						value={formData.price}
+						value={isDonation ? 0 : formData.price}
 						onChange={handleInputChange}
+						disabled={isDonation}
 					/>
 				</div>
 				<div className="form-group">
