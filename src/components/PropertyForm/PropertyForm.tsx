@@ -1,18 +1,34 @@
 import { useState, SyntheticEvent } from "react";
 
-import { FormData } from "types";
-import { emptyFormData } from "constants/form";
+import { ErrorData, FormData } from "types";
+import { emptyErrorData, emptyFormData } from "constants/form";
 import { AreaField } from "components";
 import "./styles.css";
+
+const isTitleValid = (title: any) => {
+	return title.length <= 155;
+};
+
+const isPriceValid = (price: any) => {
+	return !isNaN(price);
+};
+
+const validate: { [key: string]: (value: any) => boolean } = {
+	title: isTitleValid,
+	price: isPriceValid
+};
 
 function PropertyForm() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [placeId, setPlaceId] = useState<string | null>(null);
 	const [formData, setFormData] = useState<FormData>(emptyFormData);
+	const [errorData, setErrorData] = useState<ErrorData>(emptyErrorData);
 
 	const isDonation = `${formData.type}` === "4";
-	const validProperty = formData.title && formData.type && formData.area && (formData.price || isDonation);
+	const hasFormErrors = errorData.title || errorData.price;
+	const validProperty =
+		formData.title && formData.type > 0 && formData.area && (formData.price || isDonation) && !hasFormErrors;
 	const validPlaceId = placeId;
 
 	const handleSubmit = async (e: SyntheticEvent) => {
@@ -47,6 +63,14 @@ function PropertyForm() {
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
 	) => {
 		const { name, value } = e.target;
+
+		// Validate input
+		if (validate?.[name] && !validate?.[name](value)) {
+			setErrorData({ ...errorData, [name]: true });
+		} else {
+			setErrorData({ ...errorData, [name]: false });
+		}
+
 		setFormData({ ...formData, [name]: value });
 	};
 
@@ -57,6 +81,7 @@ function PropertyForm() {
 				<div className="form-group">
 					<label htmlFor="title">Title:</label>
 					<input
+						className={`${errorData?.title ? "errorInput" : ""}`}
 						type="text"
 						id="title"
 						name="title"
@@ -68,7 +93,7 @@ function PropertyForm() {
 				<div className="form-group">
 					<label htmlFor="type">Type:</label>
 					<select id="type" name="type" value={formData.type} onChange={handleInputChange}>
-						<option value="-1">Select type</option>
+						<option value="0">Select type</option>
 						<option value="1">Rent</option>
 						<option value="2">Buy</option>
 						<option value="3">Exchange</option>
@@ -92,6 +117,7 @@ function PropertyForm() {
 						id="price"
 						name="price"
 						placeholder="Amount"
+						className={`${errorData?.price ? "errorInput" : ""}`}
 						value={isDonation ? 0 : formData.price}
 						onChange={handleInputChange}
 						disabled={isDonation}
@@ -111,8 +137,13 @@ function PropertyForm() {
 				<button type="submit" disabled={!!(loading || error || !validProperty)}>
 					{loading && "Loading.."}
 					{!loading && validProperty && validPlaceId && "Submit"}
-					{!loading && !validProperty && "Please fill in all fields"}
-					{!loading && validProperty && !validPlaceId && "Please select an area from the list"}
+					{!loading && !validProperty && !hasFormErrors && "Please fill in all fields"}
+					{!loading &&
+						validProperty &&
+						!validPlaceId &&
+						!hasFormErrors &&
+						"Please select an area from the list"}
+					{!loading && hasFormErrors && "Please correct the errors"}
 				</button>
 			</form>
 		</div>
